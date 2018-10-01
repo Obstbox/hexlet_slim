@@ -21,7 +21,10 @@ $app->get('/form', function($request, $response) {
     return $this->renderer->render($response, "/form.phtml");
 });
 
-$app->post('/ads', function($response, $request, $args) {
+$app->post('/ads', function($response, $request) {
+
+    // just show on the page
+    /*
     $data = $response->getParsedBody();
     echo '<html><body><pre>';
     foreach($data as $key => $val) {
@@ -29,6 +32,20 @@ $app->post('/ads', function($response, $request, $args) {
     }
     echo '</body></html>';
     return;
+    */
+    $parsedBody = $response->getParsedBody();
+    
+    $dsn = 'mysql:host=localhost;dbname=hexlet;charset=utf8';
+    $usr = 'root';
+    $pwd = '1';
+
+    $pdo = new \Slim\PDO\Database($dsn, $usr, $pwd);
+
+    $insertStatement = $pdo->insert(['id', 'telephone', 'title', 'author'])
+                        ->into('ads')
+                        ->values([$parsedBody['id'], $parsedBody['tel'],
+                                $parsedBody['title'], $parsedBody['author']]);
+    $insertId = $insertStatement->execute(false);
 
 });
 
