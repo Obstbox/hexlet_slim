@@ -17,6 +17,25 @@ $app->get('/about', function($request, $response, $args) {
     return $this->renderer->render($response, "/about.phtml", $args);
 });
 
+$app->get('/form', function($request, $response, $args) {
+    return $this->renderer->render($response, "/form.phtml", $args);
+});
+
+$app->post('/ads', function($response, $request, $args) {
+    //var_dump($response);
+    /*
+    $data = $response->getParsedBody();
+    return $data['author'];
+    */
+    $data = $response->getParsedBody();
+    echo '<html><body><pre>';
+    foreach($data as $key => $val) {
+        echo "$key:\t$val <br>";
+    }
+    echo '</pre></body></html>';
+    return;
+
+});
 
 $container = $app->getContainer();
 $container['renderer'] = new PhpRenderer("../templates");
